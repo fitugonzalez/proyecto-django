@@ -1,10 +1,10 @@
 {%extends "padre.html"%}
 
-{%block title%} Agregar Familiar {%endblock%}
+{%block title%} Crear curso {%endblock%}
 
 {%block content%}
 
-    <h2>Agregar familiar</h2>
+    <h2>Crear curso</h2>
     <form method="POST">
         {%csrf_token%}
         {{form.as_p}}
