@@ -1,6 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Familiar,Curso,Paciente
-from .forms import CursoForm,PacienteForm,FamiliaresForm
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView,DetailView
+
+from .models import Familiar,Curso,Paciente,Auto
+from .forms import CursoForm,PacienteForm,FamiliaresForm,AutoForm
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 def crear_familiar(request):
@@ -43,7 +47,7 @@ def crear_curso(request):
     else:
         form = CursoForm()
         return render(request,"mi_primer_app/crear_curso.html",{"form":form})
-    
+@login_required   
 def crear_paciente(request):
     if request.method == 'POST':
         form = PacienteForm(request.POST)
@@ -60,7 +64,7 @@ def crear_paciente(request):
     else:
         form = PacienteForm()
         return render(request,"mi_primer_app/crear_paciente.html",{"form":form})
-
+@login_required
 def pacientes(request):
     pacientes = Paciente.objects.all()
     return render(request, 'mi_primer_app/pacientes.html', {'pacientes': pacientes})
@@ -73,3 +77,30 @@ def buscar_pacientes(request):
         return render(request, 'mi_primer_app/pacientes.html', {'pacientes': pacientes, 'nombre': nombre})
     else:
         return redirect('inicio')  # Redirigir a inicio si no es una solicitud GET 
+
+class AutoListView(ListView):
+    model = Auto
+    template_name = 'mi_primer_app/listar_autos.html'
+    context_object_name = 'autos'
+
+class AutoCreateView(CreateView):
+    model = Auto
+    form_class = AutoForm
+    template_name = 'mi_primer_app/crear_auto.html'
+    success_url = reverse_lazy('listar-autos')
+
+class AutoUpdateView(UpdateView):
+    model = Auto
+    form_class = AutoForm
+    template_name = 'mi_primer_app/crear_auto.html'
+    success_url = reverse_lazy('listar-autos')
+
+class AutoDeleteView(DeleteView):
+    model = Auto
+    template_name = 'mi_primer_app/eliminar_auto.html'
+    success_url = reverse_lazy('listar-autos')
+
+class AutoDetailView(DetailView):
+    model = Auto
+    template_name = 'mi_primer_app/detalle_auto.html'
+    context_object_name = 'auto'

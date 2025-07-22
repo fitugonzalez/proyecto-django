@@ -1,4 +1,5 @@
 from django import forms
+from .models import Auto
 
 class CursoForm(forms.Form):
     nombre = forms.CharField()
@@ -23,3 +24,9 @@ class FamiliaresForm(forms.Form):
     fecha_nacimiento = forms.DateField(
         widget=forms.DateInput(attrs={'type':'date'}))
     parentesco = forms.CharField(max_length=50)
+
+class AutoForm(forms.ModelForm):
+    class Meta:
+        model = Auto
+        fields = ['marca', 'modelo', 'descripcion']
+        
